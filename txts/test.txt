@@ -1,0 +1,14 @@
+<imnav_goal 패키지>
+로봇의 왼쪽 방향이 +y= 북, 앞쪽 방향이 +x = 동으로 시작된 상황에서
+1. rosrun imnav_goal imnav_goal_node
+
+2. rostopic pub /origin_gps sensor_msgs/NavSatFix "{latitude: 37.340727102832, longitude: 126.733292534745}" -1
+
+3. rostopic pub /gps_goal_fix sensor_msgs/NavSatFix "{latitude: 37.340652586, longitude: 126.733606751}" -1
+(image_nav csv_out_node 실행 중 입력 불필요)
+
+으로 move_base에 oneshot [rostopic pub /move_base_simple/goal geometry_msgs/PoseStamped '{ header: {stamp: now, frame_id: "/map" }, pose: { position: { x:  ??, y: ?? }, orientation: { x: 0, y: 0, z: 0, w: 1 } } }'  -1] 발행으로 
+초기위치에 대한, waypoints의 delta UTM 좌표를 이동 명령으로 사용
+가정: 로봇의 초기좌표가 ROS frame 상 (0, 0)이고, 로봇 orientation 방위 일치 start
+
+만약 이전과 같은 목표지점(부동소수점이 거의같다)를 가르킨다면, 같은 목표지점을 토픽 발행하지 않음
